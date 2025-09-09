@@ -1,67 +1,71 @@
 # FinancialResearcher Crew
 
-Welcome to the FinancialResearcher Crew project, powered by [crewAI](https://crewai.com). This template is designed to help you set up a multi-agent AI system with ease, leveraging the powerful and flexible framework provided by crewAI. Our goal is to enable your agents to collaborate effectively on complex tasks, maximizing their collective intelligence and capabilities.
+An intelligent financial research assistant powered by collaborating AI agents. It performs company research, generates structured market reports, and outputs results as Markdown. Built on crewAI for a clean multi‑agent architecture.
 
-## What this project does
+## 🚀 Features
 
-This project uses two collaborating AI agents to research a company and produce a polished market report:
+- **AI‑Powered Company Research**: Plans and executes research on a target company
+- **Multi‑Agent Architecture**: Separate agents for researching and analysis/writing
+- **Configurable Models/Providers**: Choose models per agent via `llm` in `agents.yaml`
+- **CLI & UV Integration**: Run with `crewai run`, `uv run run_crew`, or Python module
+- **Structured Output**: Saves a polished report to `output/report.md`
+- **Modular Design**: Easy to extend with tools, tasks, and new agents
 
-- Researcher: gathers up‑to‑date information about the target company using web search tools.
-- Analyst: synthesizes the findings into a structured, reader‑friendly report.
+## 🏗️ Architecture
 
-The agents run sequentially, and the final report is saved to `output/report.md`. By default, the target company is `Tesla` (see `src/financial_researcher/main.py`).
+The system consists of two specialized AI agents orchestrated by crewAI:
 
-## Installation
+- **Researcher Agent**: Gathers up‑to‑date information about the target company using web search tools (Serper).
+- **Analyst Agent**: Synthesizes findings into a clear, structured report.
+- **Crew Orchestrator**: Runs agents sequentially as defined in `tasks.yaml`.
 
-Ensure you have Python >=3.10 <3.14 installed on your system. This project uses [UV](https://docs.astral.sh/uv/) for dependency management and package handling, offering a seamless setup and execution experience.
+By default, the target company is `Tesla` (see `src/financial_researcher/main.py`). The final report is written to `output/report.md`.
 
-First, if you haven't already, install uv:
+## 📋 Prerequisites
+
+- Python 3.10–3.13
+- API keys for the providers you choose:
+  - `OPENAI_API_KEY` (if using OpenAI models)
+  - `GROQ_API_KEY` (if using Groq models)
+  - `SERPER_API_KEY` (for web search)
+- Optional: `uv` for fast, reproducible installs
+
+## 🛠️ Installation
+
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/your-username/financial-researcher.git
+   cd financial-researcher
+   ```
+
+2. **Install dependencies**
+   - With uv (recommended):
+   ```bash
+   pip install uv
+   uv sync
+   ```
+   - Or with pip:
+   ```bash
+   pip install -e .
+   ```
+
+3. **Set up environment variables**
+   Create a `.env` file in the project root:
+   ```env
+   OPENAI_API_KEY=...
+   GROQ_API_KEY=...
+   SERPER_API_KEY=...
+   ```
+
+   Models/providers are customizable per agent via the `llm` field in `src/financial_researcher/config/agents.yaml` using the `provider/model` format (e.g., `openai/gpt-4o-mini`, `groq/llama-3.3-70b-versatile`). Provide only the API keys for the providers you choose to use.
+
+## 🚀 Usage
+
+### Run from the CLI
 
 ```bash
-pip install uv
+crewai run
 ```
-
-Next, navigate to your project directory and install the dependencies:
-
-(Optional) Lock the dependencies and install them by using the CLI command:
-```bash
-crewai install
-```
-
-## Setup
-
-1. Create a `.env` file in the project root and add your API keys:
-
-```
-OPENAI_API_KEY=...
-GROQ_API_KEY=...
-SERPER_API_KEY=...
-```
-
-Models/providers are fully customizable per agent via the `llm` field in `src/financial_researcher/config/agents.yaml` using the `provider/model` format (e.g., `openai/gpt-4o-mini`, `groq/llama-3.3-70b-versatile`). Set only the API keys in `.env` for the providers you choose to use.
-
-2. (Optional) Change the default company by editing the `inputs` dict in `src/financial_researcher/main.py`.
-### Customizing
-
-**Add your API keys to the `.env` file**
-
-- Modify `src/financial_researcher/config/agents.yaml` to define your agents
-- Modify `src/financial_researcher/config/tasks.yaml` to define your tasks
-- Modify `src/financial_researcher/crew.py` to add your own logic, tools and specific args
-- Modify `src/financial_researcher/main.py` to add custom inputs for your agents and tasks
-
-- Change models/providers per agent by updating the `llm` value in `src/financial_researcher/config/agents.yaml`; ensure the matching API key exists in `.env`.
-
-## Running the Project
-
-To kickstart your crew of AI agents and begin task execution, run this from the root folder of your project:
-
-```bash
-$ crewai run
-```
-
-This command initializes the financial-researcher Crew, assembling the agents and assigning them tasks as defined in your configuration.
-The final report is written to `output/report.md`.
 
 Alternative run methods:
 
@@ -73,15 +77,80 @@ uv run run_crew
 python -m financial_researcher.main
 ```
 
-## Understanding Your Crew
+### Programmatic usage
 
-The financial-researcher Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
+```python
+from financial_researcher.crew import FinancialResearcher
 
-## Next steps
+inputs = {"company": "Tesla"}
+result = FinancialResearcher().crew().kickoff(inputs=inputs)
+print(result.raw)
+```
 
-- Add CLI flags to pass `company` and output path at runtime.
-- Integrate financial data sources (e.g., SEC EDGAR, Alpha Vantage, Yahoo Finance).
-- Enrich analysis with charts and KPIs; export to PDF/HTML alongside `output/report.md`.
-- Add memory, citation tracking, and a sources appendix with links and confidence.
-- Introduce evaluation and unit tests for prompts and tools.
-- Offer a simple web UI with streaming outputs.
+## 📁 Project Structure
+
+```
+financial_researcher/
+├── knowledge/
+│   └── user_preference.txt
+├── output/
+│   └── report.md            # Generated report output
+├── src/
+│   └── financial_researcher/
+│       ├── config/
+│       │   ├── agents.yaml  # Agents and their models/providers
+│       │   └── tasks.yaml   # Task definitions and output path
+│       ├── crew.py          # Crew/agents/tasks wiring
+│       ├── main.py          # Entrypoints and default inputs
+│       └── tools/
+│           └── custom_tool.py
+├── pyproject.toml           # Dependencies and scripts (uv compatible)
+├── uv.lock                  # uv lockfile
+└── README.md
+```
+
+## 🔧 Configuration
+
+### Agent configuration
+
+- Edit `src/financial_researcher/config/agents.yaml` and set each agent's `llm` as `provider/model`.
+- Ensure the corresponding provider API key is present in `.env`.
+
+### Task configuration
+
+- Edit `src/financial_researcher/config/tasks.yaml` to adjust task descriptions, context, and `output_file` location.
+
+### Environment
+
+- Add only the API keys you intend to use in `.env`: `OPENAI_API_KEY`, `GROQ_API_KEY`, `SERPER_API_KEY`.
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Commit your changes: `git commit -m "Add amazing feature"`
+4. Push to the branch: `git push origin feature/amazing-feature`
+5. Open a Pull Request
+
+## 🐛 Troubleshooting
+
+### Common issues
+
+1. **Missing/invalid API keys**: Verify your `.env` contains the correct keys for the providers you selected.
+2. **Model/provider mismatch**: Ensure `llm` is in `provider/model` form and the provider's key exists.
+3. **Serper tool errors**: Confirm `SERPER_API_KEY` is set and valid.
+4. **CLI not found**: Use `uv run run_crew` or `python -m financial_researcher.main` if `crewai` CLI isn’t on PATH.
+5. **uv not found**: `pip install uv`, then `uv sync`.
+
+## 🔄 Future Enhancements
+
+- [ ] Add CLI flags to pass `company` and output path at runtime
+- [ ] Integrate financial data sources (SEC EDGAR, Alpha Vantage, Yahoo Finance)
+- [ ] Enrich analysis with charts and KPIs; export to PDF/HTML alongside `output/report.md`
+- [ ] Add memory, citation tracking, and a sources appendix with links and confidence
+- [ ] Introduce evaluation and unit tests for prompts and tools
+- [ ] Offer a simple web UI with streaming outputs
+
+## 📞 Support
+
+If you encounter issues or have questions, please open an issue in this repository with details and steps to reproduce.
