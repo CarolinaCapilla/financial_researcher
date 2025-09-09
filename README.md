@@ -83,6 +83,5 @@ The financial-researcher Crew is composed of multiple AI agents, each with uniqu
 - Integrate financial data sources (e.g., SEC EDGAR, Alpha Vantage, Yahoo Finance).
 - Enrich analysis with charts and KPIs; export to PDF/HTML alongside `output/report.md`.
 - Add memory, citation tracking, and a sources appendix with links and confidence.
-- Support batch runs for multiple companies and scheduling.
 - Introduce evaluation and unit tests for prompts and tools.
 - Offer a simple web UI with streaming outputs.
