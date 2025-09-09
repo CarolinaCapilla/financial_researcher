@@ -77,12 +77,12 @@ python -m financial_researcher.main
 
 The financial-researcher Crew is composed of multiple AI agents, each with unique roles, goals, and tools. These agents collaborate on a series of tasks, defined in `config/tasks.yaml`, leveraging their collective skills to achieve complex objectives. The `config/agents.yaml` file outlines the capabilities and configurations of each agent in your crew.
 
-## Support
+## Next steps
 
-For support, questions, or feedback regarding the FinancialResearcher Crew or crewAI.
-- Visit our [documentation](https://docs.crewai.com)
-- Reach out to us through our [GitHub repository](https://github.com/joaomdmoura/crewai)
-- [Join our Discord](https://discord.com/invite/X4JWnZnxPb)
-- [Chat with our docs](https://chatg.pt/DWjSBZn)
-
-Let's create wonders together with the power and simplicity of crewAI.
+- Add CLI flags to pass `company` and output path at runtime.
+- Integrate financial data sources (e.g., SEC EDGAR, Alpha Vantage, Yahoo Finance).
+- Enrich analysis with charts and KPIs; export to PDF/HTML alongside `output/report.md`.
+- Add memory, citation tracking, and a sources appendix with links and confidence.
+- Support batch runs for multiple companies and scheduling.
+- Introduce evaluation and unit tests for prompts and tools.
+- Offer a simple web UI with streaming outputs.
