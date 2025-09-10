@@ -145,10 +145,6 @@ financial_researcher/
 ## 🔄 Future Enhancements
 
 - [ ] Add CLI flags to pass `company` and output path at runtime
-- [ ] Integrate financial data sources (SEC EDGAR, Alpha Vantage, Yahoo Finance)
-- [ ] Enrich analysis with charts and KPIs; export to PDF/HTML alongside `output/report.md`
-- [ ] Add memory, citation tracking, and a sources appendix with links and confidence
-- [ ] Introduce evaluation and unit tests for prompts and tools
 - [ ] Offer a simple web UI with streaming outputs
 
 ## 📞 Support
